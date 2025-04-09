@@ -13,6 +13,7 @@ public class GetAllVendors {
     private int roleId;
     private int businessId;
     private String name;
+    private String shopName;
     private String mobile;
     private String email;
     private String location;

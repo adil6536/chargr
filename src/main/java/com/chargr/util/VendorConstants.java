@@ -45,4 +45,13 @@ public class VendorConstants {
 
     public static final String NO_VENDORS_FOUND = "no vendors found";
 
+    public static final String VENDOR_STATUS_UPDATE_SUCCESS = "Vendor status update success";
+
+    public static final String VENDOR_STATUS_UPDATE_FAILED = "vendor status update failed";
+
+    public static final String CHARGER_TYPE_ADDED_SUCCESS_MSG = "Charger type added successfully";
+    public static final String CHARGER_TYPE_FAILED_MSG = "Charger type addition failed";
+    public static final String CHARGER_TYPE_EDIT_SUCCESS_MSG = "Charger type edited successfully";
+    public static final String CHARGER_TYPE_EDIT_FAILED_MSG = "Charger type edit failed";
+
 }

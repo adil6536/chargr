@@ -3,6 +3,8 @@ package com.chargr.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chargr.dto.request.CreateUpdateChargerType;
+import com.chargr.dto.request.UpdateVendor;
 import com.chargr.model.GetAllVendors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,7 +85,7 @@ public class VendorService {
         return responseBody;
     }
 
-    public ResponseBody updateVendor(CreateUpdateVendor updateVendor){
+    public ResponseBody updateVendor(UpdateVendor updateVendor){
         ResponseBody responseBody = new ResponseBody();
         if(vendorRepo.updateVendor(updateVendor) > 0){
             responseBody.setStatus(VendorConstants.SUCCESS_CODE);
@@ -245,6 +247,48 @@ public class VendorService {
             responseBody.setStatus(VendorConstants.SUCCESS_CODE);
             responseBody.setMessage(VendorConstants.VENDOR_SLOT_FOUND_MSG);
             responseBody.setData(data);
+        }
+        return responseBody;
+    }
+
+    public ResponseBody updateVendorStatus(int status,int id){
+        ResponseBody responseBody = new ResponseBody();
+        if(vendorRepo.updateVendorStatus(status,id) > 0){
+            responseBody.setStatus(VendorConstants.SUCCESS_CODE);
+            responseBody.setMessage(VendorConstants.VENDOR_STATUS_UPDATE_SUCCESS);
+            responseBody.setData(new ArrayList<>());
+        }else{
+            responseBody.setStatus(VendorConstants.ERROR_CODE);
+            responseBody.setMessage(VendorConstants.VENDOR_STATUS_UPDATE_FAILED);
+            responseBody.setData(new ArrayList<>());
+        }
+        return responseBody;
+    }
+
+    public ResponseBody createChargerType(CreateUpdateChargerType createChargerType){
+        ResponseBody responseBody = new ResponseBody();
+        if(vendorRepo.createChargerType(createChargerType) > 0){
+            responseBody.setStatus(VendorConstants.SUCCESS_CODE);
+            responseBody.setMessage(VendorConstants.CHARGER_TYPE_ADDED_SUCCESS_MSG);
+            responseBody.setData(new ArrayList<>());
+        }else{
+            responseBody.setStatus(VendorConstants.ERROR_CODE);
+            responseBody.setMessage(VendorConstants.CHARGER_TYPE_FAILED_MSG);
+            responseBody.setData(new ArrayList<>());
+        }
+        return responseBody;
+    }
+
+    public ResponseBody updateChargerType(CreateUpdateChargerType updateChargerType){
+        ResponseBody responseBody = new ResponseBody();
+        if(vendorRepo.updateChargerType(updateChargerType) > 0){
+            responseBody.setStatus(VendorConstants.SUCCESS_CODE);
+            responseBody.setMessage(VendorConstants.CHARGER_TYPE_EDIT_SUCCESS_MSG);
+            responseBody.setData(new ArrayList<>());
+        }else{
+            responseBody.setStatus(VendorConstants.ERROR_CODE);
+            responseBody.setMessage(VendorConstants.CHARGER_TYPE_EDIT_FAILED_MSG);
+            responseBody.setData(new ArrayList<>());
         }
         return responseBody;
     }

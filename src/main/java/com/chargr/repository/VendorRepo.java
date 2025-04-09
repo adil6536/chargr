@@ -8,7 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chargr.dto.request.CreateUpdateChargerType;
+import com.chargr.dto.request.UpdateVendor;
 import com.chargr.model.GetAllVendors;
+import com.chargr.util.query.UserQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -139,7 +142,7 @@ public class VendorRepo {
         return row;
     }
 
-    public int updateVendor(CreateUpdateVendor updateVendor){
+    public int updateVendor(UpdateVendor updateVendor){
         int updateCount  = VendorConstants.INTEGER_ZERO_CONSTANT;
         try{
             PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -147,13 +150,8 @@ public class VendorRepo {
                 @Override
                 public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                     PreparedStatement ps = con.prepareStatement(VendorQuery.UpdateVendor);
-                    ps.setInt(++count,updateVendor.getBussinessId());
                     ps.setString(++count,updateVendor.getName());
-                    ps.setString(++count,updateVendor.getShopName());
-                    ps.setString(++count,updateVendor.getMobile());
-                    ps.setString(++count,updateVendor.getEmail());
                     ps.setString(++count,updateVendor.getPassword());
-                    ps.setString(++count,updateVendor.getLocation());
                     ps.setString(++count,updateVendor.getStartTime());
                     ps.setString(++count,updateVendor.getEndTime());
                     ps.setInt(++count,updateVendor.getStatus());
@@ -393,6 +391,68 @@ public class VendorRepo {
             log.error("Unexpected error occurred"+ e.getMessage());
         }
         return data;
+    }
+
+    public int updateVendorStatus(int status, int id){
+        int count =0;
+        try {
+            count = jdbcTemplate.update(VendorQuery.UpdateVendorStatus ,status,id );
+
+        } catch (DataAccessException e) {
+            log.error("Unable to access data " + e.getMessage());
+        } catch (Exception e) {
+            log.error("Unexpected error occurred"+ e.getMessage());
+        }
+        return count;
+    }
+
+
+    public int createChargerType(CreateUpdateChargerType createChargerType){
+        KeyHolder holder = new GeneratedKeyHolder();
+        int row  = VendorConstants.INTEGER_ZERO_CONSTANT;
+        try{
+            PreparedStatementCreator psc = new PreparedStatementCreator() {
+                int count = VendorConstants.INTEGER_ZERO_CONSTANT;
+                @Override
+                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                    PreparedStatement ps = con.prepareStatement(VendorQuery.CreateChargerType, Statement.RETURN_GENERATED_KEYS);
+                    ps.setInt(++count,createChargerType.getVendorId());
+                    ps.setString(++count,createChargerType.getChargerType());
+                    ps.setInt(++count,createChargerType.getStatus());
+                    return ps;
+                }
+            };
+            jdbcTemplate.update(psc,holder);
+            row = holder.getKey().intValue();
+        } catch (DataAccessException dataAccessException) {
+            log.error("Unable to access data " + dataAccessException);
+        } catch (Exception exc) {
+            log.error("Unexpected error occurred " + exc);
+        }
+        return row;
+    }
+
+    public int updateChargerType(CreateUpdateChargerType updateChargerType){
+        int updateCount  = VendorConstants.INTEGER_ZERO_CONSTANT;
+        try{
+            PreparedStatementCreator psc = new PreparedStatementCreator() {
+                int count = VendorConstants.INTEGER_ZERO_CONSTANT;
+                @Override
+                public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                    PreparedStatement ps = con.prepareStatement(VendorQuery.UpdateChargerType);
+                    ps.setString(++count,updateChargerType.getChargerType());
+                    ps.setInt(++count,updateChargerType.getStatus());
+                    ps.setInt(++count,updateChargerType.getId());
+                    return ps;
+                }
+            };
+            updateCount = jdbcTemplate.update(psc);
+        } catch (DataAccessException dataAccessException) {
+            log.error("Unable to access data " + dataAccessException);
+        } catch (Exception exc) {
+            log.error("Unexpected error occurred " + exc);
+        }
+        return updateCount;
     }
 
 }

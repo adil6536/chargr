@@ -131,4 +131,18 @@ public class UserService {
         return responseBody;
     }
 
+    public ResponseBody updateUSerStatus(int status,int id){
+        ResponseBody responseBody = new ResponseBody();
+        if(userRepo.updateUSerStatus(status,id) > 0){
+            responseBody.setStatus(VendorConstants.SUCCESS_CODE);
+            responseBody.setMessage(UserConstants.USER_STATUS_UPDATE_SUCCESS_MSG);
+            responseBody.setData(new ArrayList<>());
+        }else{
+            responseBody.setStatus(VendorConstants.ERROR_CODE);
+            responseBody.setMessage(UserConstants.USER_STATUS_UPDATE_FAILED_MSG);
+            responseBody.setData(new ArrayList<>());
+        }
+        return responseBody;
+    }
+
 }

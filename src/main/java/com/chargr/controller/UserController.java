@@ -1,6 +1,8 @@
 package com.chargr.controller;
 
 import com.chargr.dto.request.CreateUpdateUser;
+import com.chargr.dto.request.UpdateStatus;
+import com.chargr.dto.request.UpdateUserBookingStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,14 +77,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
-    @PostMapping("/updateUserBookingStatus/{status}/{id}")
-    public ResponseEntity updateUserBookingStatus(@PathVariable("status") String status, @PathVariable("id") int id) {
-        JsonObject pathVariable = new JsonObject();
-        pathVariable.addProperty("status", status);
-        pathVariable.addProperty("id", id);
-        ResponseBody responseBody = parameterValidator.validatePathVariable(pathVariable, 1);
+    @PostMapping("/updateUserBookingStatus")
+    public ResponseEntity updateUserBookingStatus(@Valid @RequestBody UpdateUserBookingStatus updateUserBookingStatus, BindingResult validationResults) {
+        ResponseBody responseBody = parameterValidator.getErrors(validationResults, updateUserBookingStatus.getCustomError());
         if (responseBody == null)
-            responseBody = userService.updateUserBookingStatus(status,id);
+            responseBody = userService.updateUserBookingStatus(updateUserBookingStatus.getStatus(),updateUserBookingStatus.getId());
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
@@ -92,6 +91,14 @@ public class UserController {
         if (responseBody == null) {
             responseBody = userService.createUpdateUser(createUpdateUser);
         }
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
+
+    @PostMapping("/updateUserStatus")
+    public ResponseEntity updateUserStatus(@Valid @RequestBody UpdateStatus updateStatus, BindingResult validationResults) {
+        ResponseBody responseBody = parameterValidator.getErrors(validationResults, updateStatus.getCustomError());
+        if (responseBody == null)
+            responseBody = userService.updateUSerStatus(updateStatus.getStatus(),updateStatus.getId());
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 

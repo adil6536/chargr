@@ -2,6 +2,9 @@ package com.chargr.controller;
 
 
 
+import com.chargr.dto.request.CreateUpdateChargerType;
+import com.chargr.dto.request.UpdateStatus;
+import com.chargr.dto.request.UpdateVendor;
 import com.chargr.dto.request.VendorLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,7 +73,7 @@ public class VendorController {
     }
 
     @PostMapping("/updateVendor")
-    public ResponseEntity updateVendor(@Valid @RequestBody CreateUpdateVendor updateVendor, BindingResult validationResults) {
+    public ResponseEntity updateVendor(@Valid @RequestBody UpdateVendor updateVendor, BindingResult validationResults) {
         ResponseBody responseBody = parameterValidator.getErrors(validationResults, updateVendor.getCustomError());
         if (responseBody == null) {
             responseBody = vendorService.updateVendor(updateVendor);
@@ -170,5 +173,29 @@ public class VendorController {
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
+    @PostMapping("/updateVendorStatus")
+    public ResponseEntity updateVendorStatus(@Valid @RequestBody UpdateStatus updateStatus, BindingResult validationResults) {
+        ResponseBody responseBody = parameterValidator.getErrors(validationResults, updateStatus.getCustomError());
+        if (responseBody == null)
+            responseBody = vendorService.updateVendorStatus(updateStatus.getStatus(),updateStatus.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
 
+    @PostMapping("/createChargerType")
+    public ResponseEntity createChargerType(@Valid @RequestBody CreateUpdateChargerType createChargerType, BindingResult validationResults) {
+        ResponseBody responseBody = parameterValidator.getErrors(validationResults, createChargerType.getCustomError());
+        if (responseBody == null) {
+            responseBody = vendorService.createChargerType(createChargerType);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
+
+    @PostMapping("/updateChargerType")
+    public ResponseEntity updateChargerType(@Valid @RequestBody CreateUpdateChargerType updateChargerType, BindingResult validationResults) {
+        ResponseBody responseBody = parameterValidator.getErrors(validationResults, updateChargerType.getCustomError());
+        if (responseBody == null) {
+            responseBody = vendorService.updateChargerType(updateChargerType);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    }
 }

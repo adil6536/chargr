@@ -95,6 +95,7 @@ public class VendorUtil {
         data.setRoleId(rs.getInt("role_id"));
         data.setBusinessId(rs.getInt("business_id"));
         data.setName(rs.getString("name"));
+        data.setShopName(rs.getString("shop_name"));
         data.setMobile(rs.getString("mobile"));
         data.setEmail(rs.getString("email"));
         data.setLocation(rs.getString("location"));

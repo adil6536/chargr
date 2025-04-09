@@ -224,4 +224,17 @@ public class UserRepo {
         return row;
     }
 
+    public int updateUSerStatus(int status, int id){
+        int count =0;
+        try {
+            count = jdbcTemplate.update(UserQuery.UpdateUserStatusWithId ,status,id );
+
+        } catch (DataAccessException e) {
+            log.error("Unable to access data " + e.getMessage());
+        } catch (Exception e) {
+            log.error("Unexpected error occurred"+ e.getMessage());
+        }
+        return count;
+    }
+
 }
